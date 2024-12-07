@@ -39,7 +39,7 @@
                 @auth
                     <!-- Dashboard button when the user is logged in -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('/dashboard') }}">Dashboard</a>
+                        <a class="nav-link text-white" href="{{ url('/admin') }}">Dashboard</a>
                     </li>
                     <!-- Logout Button -->
                     <li class="nav-item">

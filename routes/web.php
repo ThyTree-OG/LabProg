@@ -18,17 +18,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/book/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.details');
-Route::get('/book/pdf/{id}', [App\Http\Controllers\BookController::class, 'viewPdf'])->name('book.pdf');
+// Route::get('/book/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.details');
+// Route::get('/book/pdf/{id}', [App\Http\Controllers\BookController::class, 'viewPdf'])->name('book.pdf');
 
+// Routes principais
 Route::get('/', 'App\Http\Controllers\StoreController@index')->name('store');
 Route::get('/admin', 'App\Http\Controllers\AdminController@index')->middleware('auth')->name('dashboard');
 
-Route::resource('admin/category', 'App\Http\Controllers\CategoryController');
-Route::resource('admin/product', 'App\Http\Controllers\ProductController');
-Auth::routes();
+// Routes para páginas de administração
+// Route::resource('admin/product', 'App\Http\Controllers\ProductController');
+Route::resource('admin/book', 'App\Http\Controllers\BookController');
+Route::resource('admin/author', 'App\Http\Controllers\AuthorController');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/about', function () {
     return view('store.about');
 })->name('about');
@@ -44,3 +45,5 @@ Route::get('/contact', function () {
 Route::get('/terms', function () {
     return view('store.terms');
 })->name('terms');
+
+Auth::routes();

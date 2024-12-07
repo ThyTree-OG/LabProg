@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Author;
 use App\Models\AuthorBook;
-// TODO: Adicionar o Tipo de Utilizador
-use App\Models\UserType;
+use App\Models\Plan;
+use App\Models\AgeGroup;
 
 
 class BookController extends Controller
@@ -29,9 +29,14 @@ class BookController extends Controller
     {
         $authors = Author::all();
         $author_books = AuthorBook::all();
-        return view('book.create',[
-            'authors'=>$authors,
-            'author_books'=>$author_books,
+        $plans = Plan::orderBy('access_level', 'desc')->get();
+        $age_groups = AgeGroup::all();
+
+        return view('book.create', [
+            'authors' => $authors,
+            'author_books' => $author_books,
+            'plans' => $plans,
+            'age_groups' => $age_groups,
         ]);
     }
 
@@ -40,26 +45,78 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255|min:3|unique:books',
+            'description' => 'required|min:5',
+            'cover_url' => 'nullable|max:255',
+            'read_time' => 'required|integer|min:1',
+            'rating_medio' => 'nullable|numeric|between:0,5',
+            'age_group' => 'required|max:50',
+            'is_active' => 'required|between:0,1',
+            'access_level' => 'required|integer|between:0,2',
+        ]);
+
+        $book = new Book();
+
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->cover_url = $request->cover_url;
+        $book->read_time = $request->read_time;
+        $book->rating_medio = $request->rating_medio;
+        $book->age_group = $request->age_group;
+        $book->access_level = $request->access_level;
+
+        if ($request->is_active == 'active') {
+            $book->is_active = 1;
+        } else {
+            $book->is_active = 0;
+        }
+
+        $book->save();
+
+        if ($request->has('authors')) {
+            foreach ($request->authors as $authorId) {
+                AuthorBook::create([
+                    'book_id' => $book->id,
+                    'author_id' => $authorId
+                ]);
+            }
+        }
+
+        return redirect()->route('book.index')->with('success', 'Book created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $book = Book::findOrFail($id);
-    
-        return view('book.details', [
+        $book = Book::find($id);
+        $plans = Plan::orderBy('access_level', 'desc')->get();
+        $age_groups = AgeGroup::all();
+
+        return view('book.show', [
             'book' => $book,
+            'plans' => $plans,
+            'age_groups' => $age_groups,
         ]);
     }
+
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $book = Book::find($id);
+        $plans = Plan::orderBy('access_level', 'desc')->get();
+        $age_groups = AgeGroup::all();
+
+        return view('book.edit', [
+            'book' => $book,
+            'plans' => $plans,
+            'age_groups' => $age_groups,
+        ]);
     }
 
     /**
@@ -67,29 +124,47 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if (Book::where('id', $id)->exists()) {
+            $request->validate([
+                'title' => 'required|max:255|min:3|unique:books,title,' . $id,
+                'description' => 'required|min:5',
+                'cover_url' => 'nullable|max:255',
+                'read_time' => 'required|integer|min:1',
+                'rating_medio' => 'nullable|numeric|between:0,5',
+                'age_group' => 'required|max:50',
+                'is_active' => 'required|between:0,1',
+                'access_level' => 'required|integer|between:0,2',
+            ]);
+
+            $book = Book::find($id);
+
+            $book->title = $request->title;
+            $book->description = $request->description;
+            $book->cover_url = $request->cover_url;
+            $book->read_time = $request->read_time;
+            $book->rating_medio = $request->rating_medio;
+            $book->age_group = $request->age_group;
+            $book->is_active = $request->is_active;
+            $book->access_level = $request->access_level;
+
+            $book->save();
+
+            return redirect()->route('book.index')->with('success', 'Book updated successfully.');
+        }
+
+        return redirect()->route('book.index')->with('error', 'Book not found.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
-    }
-    public function viewPdf($id)
-    {
-        $book = Book::findOrFail($id);
-    
-        // Ensure the book has a valid PDF path
-        if (!$book->pdf_path || !file_exists(public_path($book->pdf_path))) {
-            abort(404, 'PDF not found');
+        if (Book::where('id', $id)->exists()) {
+            $book = Book::find($id);
+            $book->delete();
         }
-    
-        return view('book.pdf', [
-            'pdfPath' => asset($book->pdf_path),
-            'book' => $book,
-        ]);
+        return redirect()->route('book.index')->with('success', 'Book deleted successfully.');
     }
-
 }

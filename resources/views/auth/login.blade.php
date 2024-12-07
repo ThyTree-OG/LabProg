@@ -5,15 +5,34 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center mb-4">Login</h2>
+            @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group mb-3">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                    <label for="user_name">Username</label>
+                    <input type="user_name" id="user_name" name="user_name" class="form-control" placeholder="Enter your username" autofocus required>
                 </div>
+
+
+        
+
+
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
                 <div class="form-check mb-3">
                     <input type="checkbox" id="remember" name="remember" class="form-check-input">
