@@ -10,4 +10,18 @@ class Book extends Model
     use HasFactory;
 
     protected $guarded=['id'];
+    protected $fillable = [
+        'title',
+        'description',
+        'cover_url',
+        'read_time',
+        'rating_medio',
+        'age_group',
+        'is_active',
+        'access_level',
+        'pdf_path',
+    ];
+    
+
+
 }

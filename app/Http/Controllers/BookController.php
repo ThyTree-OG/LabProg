@@ -9,16 +9,19 @@ use App\Models\AuthorBook;
 use App\Models\Plan;
 use App\Models\AgeGroup;
 
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    //
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $books = Book::all();
 
         return view('book.index', [
-            'books' => $books
+            'books' => $books,
         ]);
     }
 
@@ -54,6 +57,7 @@ class BookController extends Controller
             'age_group' => 'required|max:50',
             'is_active' => 'required|between:0,1',
             'access_level' => 'required|integer|between:0,2',
+            'pdf' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
         $book = new Book();
@@ -65,6 +69,14 @@ class BookController extends Controller
         $book->rating_medio = $request->rating_medio;
         $book->age_group = $request->age_group;
         $book->access_level = $request->access_level;
+        $book->pdf_path = $request->pdf_path;
+
+        // Handle PDF file upload
+        $pdfPath = null;
+        if ($request->hasFile('pdf')) {
+            $pdfPath = $request->file('pdf')->store('public/pdf'); // Store in storage/app/public/pdf
+        }
+
 
         if ($request->is_active == 'active') {
             $book->is_active = 1;
@@ -102,11 +114,10 @@ class BookController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $book = Book::find($id);
         $plans = Plan::orderBy('access_level', 'desc')->get();
@@ -122,7 +133,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         if (Book::where('id', $id)->exists()) {
             $request->validate([
@@ -159,12 +170,32 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        if (Book::where('id', $id)->exists()) {
-            $book = Book::find($id);
-            $book->delete();
+        $book = Book::findOrFail($id);
+
+        // Delete associated PDF if exists
+        if ($book->pdf_path && file_exists(public_path($book->pdf_path))) {
+            unlink(public_path($book->pdf_path));
         }
-        return redirect()->route('book.index')->with('success', 'Book deleted successfully.');
+
+        $book->delete();
+
+        return redirect()->route('book.index')->with('success', 'Book deleted successfully!');
+    }
+
+    /**
+     * Display the PDF file for a book.
+     */
+    public function viewPdf($id)
+    {
+        $book = Book::findOrFail($id);
+
+        // Ensure the book has a valid PDF path
+        if (!$book->pdf_path || !file_exists(public_path($book->pdf_path))) {
+            abort(404, 'PDF not found');
+        }
+
+        return response()->file(public_path($book->pdf_path));
     }
 }

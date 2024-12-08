@@ -9,7 +9,6 @@
     <div class="container mx-auto text-center py-16">
         <h1 class="text-4xl font-bold text-gray-800">Find a book</h1>
         <form action="" method="GET" class="d-flex justify-content-center">
-            <!-- Search Input Box -->
             <input
                 type="text"
                 name="query"
@@ -17,7 +16,6 @@
                 class="form-control w-50 py-2 rounded-start border-0"
                 style="max-width: 500px;"
             >
-            <!-- Search Button -->
             <button type="submit" class="btn btn-warning rounded-end">
                 <i class="bi bi-search"></i> Search
             </button>
@@ -38,29 +36,24 @@
 <main class="container my-5">
     <h2 class="text-warning mb-4">New Books</h2>
     <div class="row row-cols-1 row-cols-md-4 g-4">
-        <!-- Book Card -->
         @foreach($books as $book)
         <div class="col mb-5">
             <div class="card h-100">
-                <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                <!-- Product details-->
+                <img class="card-img-top" src="{{ $book->cover_image }}" alt="{{ $book->title }}" />
                 <div class="card-body p-4">
                     <div class="text-center">
-                        <!-- Product name-->
                         <h5 class="fw-bolder">{{ $book->title }}</h5>
-                        <!-- Product price-->
-                        <!-- $40.00 - $80.00 -->
+                        <p>{{ $book->description }}</p>
                     </div>
                 </div>
-                <!-- Product actions-->
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                    <div class="text-center">
+                        <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
+                    </div>
                 </div>
             </div>
         </div>
         @endforeach
-        <!-- Repeat similar cards for other books -->
     </div>
 </main>
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\BookController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,8 +18,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-// Route::get('/book/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.details');
-// Route::get('/book/pdf/{id}', [App\Http\Controllers\BookController::class, 'viewPdf'])->name('book.pdf');
+
+
+Route::get('/books', [BookController::class, 'index'])->name('book.index');
+Route::get('/book/{id}', [BookController::class, 'show'])->name('book.details');
+Route::post('/book/store', [BookController::class, 'store'])->name('book.store');
+Route::get('/book/pdf/{id}', [BookController::class, 'viewPdf'])->name('book.pdf');
+
 
 // Routes principais
 Route::get('/', 'App\Http\Controllers\StoreController@index')->name('store');
