@@ -23,7 +23,9 @@ use Illuminate\Support\Facades\Route;
 
 // Routes principais
 Route::get('/', 'App\Http\Controllers\StoreController@index')->name('store');
-Route::get('/admin', 'App\Http\Controllers\AdminController@index')->middleware('auth')->name('dashboard');
+Route::get('/admin', 'App\Http\Controllers\AdminController@index')
+->middleware(['auth', 'admin'])
+->name('dashboard');
 
 // Routes para páginas de administração
 // Route::resource('admin/product', 'App\Http\Controllers\ProductController');

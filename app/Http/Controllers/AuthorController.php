@@ -13,7 +13,7 @@ class AuthorController extends Controller
     public function index()
     {
         $author = Author::all();
-        
+
         return view('author.index', [
             'authors' => $author
         ]);
@@ -24,7 +24,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return view('author.create');
     }
 
     /**
@@ -32,7 +32,16 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'description' => 'required',
+            'nationality' => 'required|max:255',
+            'author_photo_url' => 'nullable|url'
+        ]);
+
+        Author::create($validated);
+        return redirect()->route('author.index')->with('success', 'Author created successfully');
     }
 
     /**
@@ -40,7 +49,8 @@ class AuthorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        return view('author.show', compact('author'));
     }
 
     /**
@@ -48,7 +58,8 @@ class AuthorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        return view('author.edit', compact('author'));
     }
 
     /**
@@ -56,7 +67,17 @@ class AuthorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'description' => 'required',
+            'nationality' => 'required|max:255',
+            'author_photo_url' => 'nullable|url'
+        ]);
+
+        $author = Author::findOrFail($id);
+        $author->update($validated);
+        return redirect()->route('author.index')->with('success', 'Author updated successfully');
     }
 
     /**
@@ -64,6 +85,8 @@ class AuthorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        $author->delete();
+        return redirect()->route('author.index')->with('success', 'Author deleted successfully');
     }
 }
