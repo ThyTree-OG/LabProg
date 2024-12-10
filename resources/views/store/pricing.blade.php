@@ -33,7 +33,25 @@
                     <a href="#" class="btn btn-warning">Sign Up</a>
                 </div>
             </div>
-        </div>       
+        </div>
+        <!-- Standard Plan -->
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-body text-center">
+                    <h3 class="text-orange-500 font-bold mb-4">Standard Plan</h3>
+                    <p class="text-gray-700">Perfect for regular learners looking for more resources.</p>
+                    <ul class="list-unstyled my-3">
+                        <li><i class="bi bi-check-circle-fill text-orange-500"></i> Access to 50 stories</li>
+                        <li><i class="bi bi-check-circle-fill text-orange-500"></i> Intermediate vocabulary exercises</li>
+                        <li><i class="bi bi-check-circle-fill text-orange-500"></i> Weekly progress reports</li>
+                    </ul>
+                    <h4 class="text-orange-500 font-bold">$9.99/month</h4>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="#" class="btn btn-warning">Get Standard</a>
+                </div>
+            </div>
+        </div>
         <!-- Premium Plan -->
         <div class="col">
             <div class="card h-100 shadow">

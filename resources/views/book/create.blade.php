@@ -52,6 +52,11 @@
         </div>
 
         <div class="mb-3 col-md-3">
+            <label for="pdf" class="form-label">Upload PDF</label>
+            <input type="file" name="pdf" id="pdf" class="form-control">
+        </div>
+
+        <div class="mb-3 col-md-3">
             <label for="is_active" class="form-label">Status</label>
             <select class="form-control form-select" name="is_active" id="is_active" required>
                 <option value="">Select status</option>
