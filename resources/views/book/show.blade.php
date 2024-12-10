@@ -44,6 +44,13 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="mb-3 col-md-12">
+        <label class="form-label">Authors</label>
+        <input type="text" class="form-control" value="{{ implode(', ', $book->authors->pluck('first_name')->toArray()) }}" disabled>
+    </div>
+</div>
+
 <div class="mt-3">
     <a href="{{ route('book.index') }}" class="btn btn-secondary">Back</a>
 </div>

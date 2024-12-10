@@ -65,12 +65,7 @@ class BookController extends Controller
         $book->rating_medio = $request->rating_medio;
         $book->age_group = $request->age_group;
         $book->access_level = $request->access_level;
-
-        if ($request->is_active == 'active') {
-            $book->is_active = 1;
-        } else {
-            $book->is_active = 0;
-        }
+        $book->is_active = $request->is_active;
 
         $book->save();
 
@@ -93,11 +88,13 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $plans = Plan::orderBy('access_level', 'desc')->get();
+        $authors = Author::all();
         $age_groups = AgeGroup::all();
 
         return view('book.show', [
             'book' => $book,
             'plans' => $plans,
+            'authors' => $authors,
             'age_groups' => $age_groups,
         ]);
     }
@@ -110,11 +107,13 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $plans = Plan::orderBy('access_level', 'desc')->get();
+        $authors = Author::all();
         $age_groups = AgeGroup::all();
 
         return view('book.edit', [
             'book' => $book,
             'plans' => $plans,
+            'authors' => $authors,
             'age_groups' => $age_groups,
         ]);
     }

@@ -76,6 +76,19 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="mb-3 col-md-12">
+            <label for="authors" class="form-label">Authors</label>
+            <select class="form-control form-select" name="authors[]" id="authors" multiple required>
+                @foreach($authors as $author)
+                <option value="{{ $author->id }}" {{ $book->authors->contains($author->id) ? 'selected' : '' }}>
+                    {{ $author->first_name }} {{ $author->last_name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 @endsection

@@ -5,10 +5,11 @@
 <h1> Books </h1>
 
 <table id="books" class="display" style="width:100%">
-    <thead>
+<thead>
         <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Authors</th>
             <th>Cover URL</th>
             <th>Read Time</th>
             <th>Rating Medio</th>
@@ -25,6 +26,12 @@
         <tr>
             <td>{{ $book->title }}</td>
             <td>{{ $book->description }}</td>
+            <td>
+                @foreach($book->authors as $author)
+                    {{ $author->first_name }} {{ $author->last_name }}
+                    @if(!$loop->last), @endif
+                @endforeach
+            </td>
             <td>{{ $book->cover_url }}</td>
             <td>{{ $book->read_time }}</td>
             <td>{{ $book->rating_medio }}</td>
