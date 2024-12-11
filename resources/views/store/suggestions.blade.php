@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home - Storytails')
+@section('title', 'Suggestions - Storytails')
 
 @section('content')
 
@@ -39,7 +39,7 @@
 
 <!-- Main Content for the page -->
 <main class="container my-5">
-    <h2 class="text-warning mb-4">New Books</h2>
+    <h2 class="text-warning mb-4">Suggested Books</h2>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         @foreach($books as $book)
         <div class="col mb-5">
@@ -53,10 +53,10 @@
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
-                        <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('book.read', $book->id) }}" target="_blank">
+                        <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('book.read', $book->book_id) }}" target="_blank">
                             <i class="bi bi-book lowe"></i> Read
                         </a>
-                        <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
+                        <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->book_id) }}">View details</a>
                     </div>
                 </div>
             </div>

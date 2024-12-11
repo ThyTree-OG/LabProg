@@ -8,9 +8,7 @@ use App\Models\Author;
 use App\Models\AuthorBook;
 use App\Models\Plan;
 use App\Models\AgeGroup;
-
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 
 class BookController extends Controller
@@ -93,7 +91,7 @@ class BookController extends Controller
             'age_group' => 'required|max:50',
             'is_active' => 'required|between:0,1',
             'access_level' => 'required|integer|between:0,2',
-            'pdf' => 'nullable|file|mimes:pdf|max:2048',
+            'pdf' => 'required|file|mimes:pdf',
         ]);
 
         $book = new Book();
@@ -111,7 +109,10 @@ class BookController extends Controller
         // Handle PDF file upload
         $pdfPath = null;
         if ($request->hasFile('pdf')) {
-            $pdfPath = $request->file('pdf')->store('public/pdf'); // Store in storage/app/public/pdf
+            $pdfFile = $request->file('pdf');
+            $filename = $pdfFile->getClientOriginalName();
+            $pdfFile->storeAs('public/livros', $filename);
+            $book->pdf_path = 'storage/livros/' . $filename;
         }
 
         $book->save();
@@ -195,6 +196,7 @@ class BookController extends Controller
                 'age_group' => 'required|max:50',
                 'is_active' => 'required|between:0,1',
                 'access_level' => 'required|integer|between:0,2',
+                'authors' => 'required|array|min:1',
             ]);
 
             $book = Book::find($id);
@@ -207,6 +209,9 @@ class BookController extends Controller
             $book->age_group = $request->age_group;
             $book->is_active = $request->is_active;
             $book->access_level = $request->access_level;
+
+            // Sync the authors
+            $book->authors()->sync($request->authors);
 
             $book->save();
 
@@ -250,26 +255,36 @@ class BookController extends Controller
     }
 
     public function popularBooks()
-{
-    $popularBooks = DB::table('popularbookslast3months')
-        ->select([
-            'book_id as id',
-            'title',
-            'description',
-            'cover_url',
-            'total_reads',
-            'average_rating',
-            'avg_progress'
-        ])
-        ->get();
-    return view('store.index', ['books' => $popularBooks]);
-}
-
+    {
+        $popularBooks = DB::table('popularbookslast3months')
+            ->select([
+                'book_id as id',
+                'title',
+                'description',
+                'cover_url',
+                'total_reads',
+                'average_rating',
+                'avg_progress'
+            ])
+            ->get();
+        return view('store.index', ['books' => $popularBooks]);
+    }
 
     public function read($id)
     {
         $book = Book::findOrFail($id);
 
         return response()->file(public_path($book->pdf_path));
+    }
+
+    public function suggestions()
+    {
+        $userId = auth()->id();
+
+        $suggestedBooks = DB::select('CALL SuggestedBooksForUser(?)', [$userId]);
+
+        return view('store.suggestions', [
+            'books' => $suggestedBooks
+        ]);
     }
 }

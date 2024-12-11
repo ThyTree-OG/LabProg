@@ -45,7 +45,15 @@ Route::get('/admin', 'App\Http\Controllers\AdminController@index')
 
 // Routes para páginas de administração
 // Route::resource('admin/product', 'App\Http\Controllers\ProductController');
-Route::resource('admin/book', 'App\Http\Controllers\BookController');
+Route::get('admin/book/index', [BookController::class, 'index'])->name('book.index');
+Route::get('admin/book/{id}', [BookController::class, 'showAdmin'])->name('book.showAdmin');
+Route::get('admin/book/{id}/edit', [BookController::class, 'edit'])->name('book.edit');
+Route::put('admin/book/{id}', [BookController::class, 'update'])->name('book.update');
+Route::delete('admin/book/{id}', [BookController::class, 'destroy'])->name('book.destroy');
+Route::get('admin/book/create', [BookController::class, 'create'])->name('book.create');
+Route::post('admin/book', [BookController::class, 'store'])->name('book.store');
+
+
 Route::resource('admin/author', 'App\Http\Controllers\AuthorController');
 
 Route::get('/about', function () {
@@ -67,13 +75,16 @@ Route::get('/terms', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [UserController::class, 'showUser'])->name('user.profile');
+    Route::get('/profile', [UserController::class, 'show'])->name('user.profile');
     Route::post('/profile', [UserController::class, 'update'])->name('user.profile.update');
 });
 
 Route::get('/authors/{id}', [AuthorController::class, 'showUser'])->name('author.details');
 
 Route::get('/books', [BookController::class, 'indexRequest'])->name('book.indexRequest');
+
+Route::get('/suggestions', [BookController::class, 'suggestions'])->name('book.suggestions');
+
 
 Auth::routes(['reset' => true]);
 

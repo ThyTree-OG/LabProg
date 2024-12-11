@@ -46,7 +46,7 @@
                         Options
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="{{ route('book.show', $book->id) }}">
+                        <li><a class="dropdown-item" href="{{ route('book.showAdmin', $book->id) }}">
                             <i class="far fa-eye"></i> View</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('book.edit', $book->id) }}">

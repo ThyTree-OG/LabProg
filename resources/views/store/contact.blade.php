@@ -21,7 +21,7 @@
     <div class="container text-center">
         <h2 class="text-orange-500 text-3xl font-bold mb-4">Other Ways to Reach Us</h2>
         <p class="text-gray-700 text-lg">
-            Prefer to email or call? Here’s how you can reach us:
+            Prefer to email or call? Here's how you can reach us:
         </p>
         <p class="mt-4 text-gray-600">
             <i class="bi bi-envelope-fill text-orange-500"></i> 

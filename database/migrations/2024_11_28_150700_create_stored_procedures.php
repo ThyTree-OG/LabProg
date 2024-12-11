@@ -111,81 +111,165 @@ return new class extends Migration
             END;
         ");
 
-        DB::unprepared("
-            -- Procedure: SuggestedBooksForUser
-            CREATE PROCEDURE SuggestedBooksForUser(
-                IN p_user_id INT
-            )
-            BEGIN
-                -- Suggest books that share tags with user's favorites
-                SELECT DISTINCT b.id AS book_id, 
-                b.title, 
-                b.description, 
-                b.cover_url, 
-                b.age_group, 
-                AVG(bur.rating) AS avg_rating, 
-                COUNT(bur.id) AS total_reads
-                FROM books b
-                JOIN tagging_tagged tt ON b.id = tt.book_id
-                JOIN tags t ON tt.tag_id = t.id
-                JOIN book_user_favourite buf ON buf.book_id = b.id
-                LEFT JOIN book_user_read bur ON b.id = bur.book_id
-                WHERE buf.user_id = p_user_id
-                AND b.id NOT IN (
-                    SELECT book_id 
-                    FROM book_user_read 
-                    WHERE user_id = p_user_id
+        // NOVO: Eliminar se não funcionar
+        $procedure = "
+                CREATE PROCEDURE `SuggestedBooksForUser`(
+                    IN p_user_id INT
                 )
-                GROUP BY b.id
-                ORDER BY avg_rating DESC, total_reads DESC
-                LIMIT 10;
+                BEGIN
+                    (SELECT DISTINCT 
+                        b.id AS book_id,
+                        b.title,
+                        b.description,
+                        b.cover_url,
+                        b.age_group,
+                        AVG(bur.rating) AS avg_rating,
+                        COUNT(bur.id) AS total_reads,
+                        'tag_based' as suggestion_type
+                    FROM books b
+                    JOIN tagging_tagged tt ON b.id = tt.book_id
+                    JOIN tags t ON tt.tag_id = t.id
+                    JOIN book_user_favourite buf ON buf.book_id = b.id
+                    LEFT JOIN book_user_read bur ON b.id = bur.book_id
+                    WHERE buf.user_id = p_user_id
+                    AND b.id NOT IN (
+                        SELECT book_id 
+                        FROM book_user_read 
+                        WHERE user_id = p_user_id
+                    )
+                    GROUP BY b.id, b.title, b.description, b.cover_url, b.age_group)
+                    
+                    UNION
+                    
+                    (SELECT DISTINCT 
+                        b.id AS book_id,
+                        b.title,
+                        b.description,
+                        b.cover_url,
+                        b.age_group,
+                        AVG(bur.rating) AS avg_rating,
+                        COUNT(bur.id) AS total_reads,
+                        'popular' as suggestion_type
+                    FROM books b
+                    LEFT JOIN book_user_read bur ON b.id = bur.book_id
+                    WHERE b.id NOT IN (
+                        SELECT book_id 
+                        FROM book_user_read 
+                        WHERE user_id = p_user_id
+                    )
+                    GROUP BY b.id, b.title, b.description, b.cover_url, b.age_group)
+                    
+                    UNION
+                    
+                    (SELECT DISTINCT 
+                        b.id AS book_id,
+                        b.title,
+                        b.description,
+                        b.cover_url,
+                        b.age_group,
+                        AVG(bur.rating) AS avg_rating,
+                        COUNT(bur.id) AS total_reads,
+                        'age_group' as suggestion_type
+                    FROM books b
+                    JOIN book_user_favourite buf ON buf.book_id = b.id
+                    LEFT JOIN book_user_read bur ON b.id = bur.book_id
+                    WHERE b.age_group = (
+                        SELECT age_group 
+                        FROM books 
+                        WHERE id IN (SELECT book_id FROM book_user_favourite WHERE user_id = p_user_id)
+                        LIMIT 1
+                    )
+                    AND b.id NOT IN (
+                        SELECT book_id 
+                        FROM book_user_read 
+                        WHERE user_id = p_user_id
+                    )
+                    GROUP BY b.id, b.title, b.description, b.cover_url, b.age_group)
+                    
+                    ORDER BY avg_rating DESC, total_reads DESC
+                    LIMIT 30;
+                END
+            ";
 
-                -- Suggest popular books the user hasn't read
-                SELECT DISTINCT b.id AS book_id, 
-                b.title, 
-                b.description, 
-                b.cover_url, 
-                b.age_group, 
-                AVG(bur.rating) AS avg_rating, 
-                COUNT(bur.id) AS total_reads
-                FROM books b
-                LEFT JOIN book_user_read bur ON b.id = bur.book_id
-                WHERE b.id NOT IN (
-                SELECT book_id 
-                FROM book_user_read 
-                WHERE user_id = p_user_id
-                )
-                GROUP BY b.id
-                ORDER BY total_reads DESC, avg_rating DESC
-                LIMIT 10;
+        DB::unprepared($procedure);
 
-                -- Suggest books in the same age group as user's favorite books
-                SELECT DISTINCT b.id AS book_id, 
-                    b.title, 
-                    b.description, 
-                    b.cover_url, 
-                    b.age_group, 
-                    AVG(bur.rating) AS avg_rating, 
-                    COUNT(bur.id) AS total_reads
-                FROM books b
-                JOIN book_user_favourite buf ON buf.book_id = b.id
-                LEFT JOIN book_user_read bur ON b.id = bur.book_id
-                WHERE b.age_group = (
-                    SELECT age_group 
-                    FROM books 
-                    WHERE id IN (SELECT book_id FROM book_user_favourite WHERE user_id = p_user_id)
-                    LIMIT 1
-                )
-                AND b.id NOT IN (
-                    SELECT book_id 
-                    FROM book_user_read 
-                    WHERE user_id = p_user_id
-                )
-                GROUP BY b.id
-                ORDER BY avg_rating DESC, total_reads DESC
-                LIMIT 10;
-            END;
-        ");
+
+        // Antigo: Manter se o novo não funcionar
+        // DB::unprepared("
+        //     -- Procedure: SuggestedBooksForUser
+        //     CREATE PROCEDURE SuggestedBooksForUser(
+        //         IN p_user_id INT
+        //     )
+        //     BEGIN
+        //         -- Suggest books that share tags with user's favorites
+        //         SELECT DISTINCT b.id AS book_id, 
+        //         b.title, 
+        //         b.description, 
+        //         b.cover_url, 
+        //         b.age_group, 
+        //         AVG(bur.rating) AS avg_rating, 
+        //         COUNT(bur.id) AS total_reads
+        //         FROM books b
+        //         JOIN tagging_tagged tt ON b.id = tt.book_id
+        //         JOIN tags t ON tt.tag_id = t.id
+        //         JOIN book_user_favourite buf ON buf.book_id = b.id
+        //         LEFT JOIN book_user_read bur ON b.id = bur.book_id
+        //         WHERE buf.user_id = p_user_id
+        //         AND b.id NOT IN (
+        //             SELECT book_id 
+        //             FROM book_user_read 
+        //             WHERE user_id = p_user_id
+        //         )
+        //         GROUP BY b.id
+        //         ORDER BY avg_rating DESC, total_reads DESC
+        //         LIMIT 10;
+
+        //         -- Suggest popular books the user hasn't read
+        //         SELECT DISTINCT b.id AS book_id, 
+        //         b.title, 
+        //         b.description, 
+        //         b.cover_url, 
+        //         b.age_group, 
+        //         AVG(bur.rating) AS avg_rating, 
+        //         COUNT(bur.id) AS total_reads
+        //         FROM books b
+        //         LEFT JOIN book_user_read bur ON b.id = bur.book_id
+        //         WHERE b.id NOT IN (
+        //         SELECT book_id 
+        //         FROM book_user_read 
+        //         WHERE user_id = p_user_id
+        //         )
+        //         GROUP BY b.id
+        //         ORDER BY total_reads DESC, avg_rating DESC
+        //         LIMIT 10;
+
+        //         -- Suggest books in the same age group as user's favorite books
+        //         SELECT DISTINCT b.id AS book_id, 
+        //             b.title, 
+        //             b.description, 
+        //             b.cover_url, 
+        //             b.age_group, 
+        //             AVG(bur.rating) AS avg_rating, 
+        //             COUNT(bur.id) AS total_reads
+        //         FROM books b
+        //         JOIN book_user_favourite buf ON buf.book_id = b.id
+        //         LEFT JOIN book_user_read bur ON b.id = bur.book_id
+        //         WHERE b.age_group = (
+        //             SELECT age_group 
+        //             FROM books 
+        //             WHERE id IN (SELECT book_id FROM book_user_favourite WHERE user_id = p_user_id)
+        //             LIMIT 1
+        //         )
+        //         AND b.id NOT IN (
+        //             SELECT book_id 
+        //             FROM book_user_read 
+        //             WHERE user_id = p_user_id
+        //         )
+        //         GROUP BY b.id
+        //         ORDER BY avg_rating DESC, total_reads DESC
+        //         LIMIT 10;
+        //     END;
+        // ");
     }
 
     /**
