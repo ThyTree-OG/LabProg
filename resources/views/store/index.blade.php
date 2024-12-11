@@ -55,7 +55,6 @@
                         <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('book.read', $book->id) }}" target="_blank">
                             <i class="bi bi-book lowe"></i> Read
                         </a>
-                        <!-- //TODO: Resolver o erro causado na view de livros populares -->
                         <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
                     </div>
                 </div>

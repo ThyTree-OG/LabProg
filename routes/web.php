@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 /*
@@ -74,3 +76,12 @@ Route::get('/authors/{id}', [AuthorController::class, 'showUser'])->name('author
 Route::get('/books', [BookController::class, 'indexRequest'])->name('book.indexRequest');
 
 Auth::routes(['reset' => true]);
+
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    ->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'checkEmail'])
+    ->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');

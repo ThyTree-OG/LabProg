@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
         });
 
-        DB::table('author_book')->insert([
+        DB::table('author_books')->insert([
             ['author_id' => 1, 'book_id' => 1],
             ['author_id' => 2, 'book_id' => 2],
             ['author_id' => 3, 'book_id' => 3],
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('author_book');
+        Schema::dropIfExists('author_books');
     }
 };

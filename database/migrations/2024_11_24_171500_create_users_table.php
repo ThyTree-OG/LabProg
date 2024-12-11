@@ -21,13 +21,14 @@ return new class extends Migration
             $table->string('email', 255)->unique();
             $table->string('password');
             $table->string('user_photo_url', 255)->nullable();
+            $table->rememberToken();
             $table->timestamps(0); // created_at, updated_at
         });
 
         DB::table('users')->insert([
-            ['user_type_id' => 1, 'first_name' => 'Alice', 'last_name' => 'Smith', 'user_name' => 'alice_s', 'email' => 'alice@example.com', 'password' => bcrypt('password123'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['user_type_id' => 2, 'first_name' => 'Bob', 'last_name' => 'Brown', 'user_name' => 'bob_b', 'email' => 'bob@example.com', 'password' => bcrypt('password456'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['user_type_id' => 3, 'first_name' => 'Charlie', 'last_name' => 'Davis', 'user_name' => 'charlie_d', 'email' => 'charlie@example.com', 'password' => bcrypt('password789'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['user_type_id' => 1, 'first_name' => 'Admin', 'last_name' => 'istrator', 'user_name' => 'admin', 'email' => 'admin@admin.com', 'password' => bcrypt('admin'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['user_type_id' => 2, 'first_name' => 'Alice', 'last_name' => 'Alice', 'user_name' => 'alice_a', 'email' => 'alice@example.com', 'password' => bcrypt('1234'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
+            ['user_type_id' => 3, 'first_name' => 'Bob', 'last_name' => 'Brown', 'user_name' => 'bob_b', 'email' => 'bob@example.com', 'password' => bcrypt('1234'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
