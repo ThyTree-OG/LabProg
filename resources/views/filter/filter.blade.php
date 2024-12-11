@@ -5,7 +5,7 @@
     <h1 class="custom-font">Filter Books</h1>
 
     <!-- Formulário de Filtro -->
-    <form action="{{ route('book.index') }}" method="GET" class="mb-4">
+    <form action="{{ route('book.indexRequest') }}" method="GET" class="mb-4">
         <div class="row">
             <div class="col-md-4">
                 <label for="title" class="form-label">Title</label>

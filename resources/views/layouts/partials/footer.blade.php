@@ -6,7 +6,7 @@
             <img src="{{ asset('assets/img/storytail-logo-06.png') }}" alt="Storytail Logo" style="width: 55px; height: auto;">
         </a>
         <div class="d-flex justify-content-center gap-4 mt-3">
-            <a href="#" class="text-white text-decoration-none">Books</a>
+            <a href="{{ route('store') }}" class="text-white text-decoration-none">Books</a>
             <a href="{{ route('pricing') }}" class="text-white text-decoration-none">Pricing</a>
             <a href="{{ route('contact') }}" class="text-white text-decoration-none">Contacts</a>
             <a href="{{ route('login') }}" class="text-white text-decoration-none">Login</a>

@@ -11,7 +11,8 @@ use App\Models\AgeGroup;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+
+
 class BookController extends Controller
 {
     /**
@@ -26,39 +27,39 @@ class BookController extends Controller
         ]);
     }
 
-    public function index(Request $request)
-{
-    $query = Book::query();
+    public function indexRequest(Request $request)
+    {
+        $query = Book::query();
 
-    // Filtro por título
-    if ($request->filled('title')) {
-        $query->where('title', 'like', '%' . $request->title . '%');
+        // Filtro por título
+        if ($request->filled('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        // Filtro por autor
+        if ($request->filled('author')) {
+            $query->whereHas('authors', function ($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->author . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->author . '%')
+                    ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $request->author . '%');
+            });
+        }
+
+        // Filtro por faixa etária
+        if ($request->filled('age_group')) {
+            $query->where('age_group', $request->age_group);
+        }
+
+        // Filtro por nível de acesso
+        if ($request->filled('access_level')) {
+            $query->where('access_level', $request->access_level);
+        }
+
+        // Obter os resultados
+        $books = $query->paginate(9);
+
+        return view('filter.filter', compact('books'));
     }
-
-    // Filtro por autor
-    if ($request->filled('author')) {
-        $query->whereHas('authors', function ($q) use ($request) {
-            $q->where('first_name', 'like', '%' . $request->author . '%')
-              ->orWhere('last_name', 'like', '%' . $request->author . '%')
-              ->orWhere(DB::raw("CONCAT(first_name, ' ', last_name)"), 'like', '%' . $request->author . '%');
-        });
-    }
-
-    // Filtro por faixa etária
-    if ($request->filled('age_group')) {
-        $query->where('age_group', $request->age_group);
-    }
-
-    // Filtro por nível de acesso
-    if ($request->filled('access_level')) {
-        $query->where('access_level', $request->access_level);
-    }
-
-    // Obter os resultados
-    $books = $query->paginate(9);
-
-    return view('filter.filter', compact('books'));
-}
 
     /**
      * Show the form for creating a new resource.
@@ -145,20 +146,20 @@ class BookController extends Controller
         ]);
     }
 
-public function showUser(string $id)
-     {
-         // Carrega o livro e os autores associados
-         $book = Book::with('authors')->findOrFail($id);
- 
-         $plans = Plan::orderBy('access_level', 'desc')->get();
-         $age_groups = AgeGroup::all();
- 
-         return view('book.details', [
-             'book' => $book,
-             'plans' => $plans,
-             'age_groups' => $age_groups,
-         ]);
-     }
+    public function showUser(string $id)
+    {
+        // Carrega o livro e os autores associados
+        $book = Book::with('authors')->findOrFail($id);
+
+        $plans = Plan::orderBy('access_level', 'desc')->get();
+        $age_groups = AgeGroup::all();
+
+        return view('book.details', [
+            'book' => $book,
+            'plans' => $plans,
+            'age_groups' => $age_groups,
+        ]);
+    }
 
 
     /**
@@ -255,10 +256,9 @@ public function showUser(string $id)
     }
 
     public function read($id)
-{
-    $book = Book::findOrFail($id);
-    
-    return response()->file(public_path($book->pdf_path));
-}
+    {
+        $book = Book::findOrFail($id);
 
+        return response()->file(public_path($book->pdf_path));
+    }
 }

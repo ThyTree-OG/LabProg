@@ -20,7 +20,7 @@
                 <i class="bi bi-search"></i> Search
             </button>
 
-            <a href="{{ route('book.index') }}" class="btn btn-warning rounded">
+            <a href="{{ route('book.indexRequest') }}" class="btn btn-warning rounded">
             <i class="bi bi-funnel"></i> Filter
         </a>
         </form>
