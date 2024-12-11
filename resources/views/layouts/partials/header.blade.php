@@ -16,7 +16,7 @@
         <!-- Home Button (Storytail) -->
         <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
             <img src="{{ asset('assets/img/storytail-logo-02.png') }}" alt="Storytail Logo" style="width: 55px; height: auto;">
-            <span class="ms-2 text-orange-500 fw-bold">Storytail</span>
+            <span class="ms-2 text-orange-custom fw-bold">Storytail</span>
         </a>
 
         <!-- Toggle Button for Navbar on Mobile -->
@@ -39,12 +39,20 @@
                 @endguest
 
                 @auth
-                    <!-- Dashboard button when the user is logged in -->
+                    <!-- Display the user name and links when the user is logged in -->
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-bold" href="{{ url('/admin') }}">Dashboard</a>
+                        <span class="nav-link text-white fw-bold">{{ Auth::user()->first_name }}</span>
                     </li>
+                    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item text-capitalize" href="{{ route('user.profile') }}">Settings</a></li>
+                    </ul>
+                    </li>
+                    </ul>
                     <!-- Logout Button -->
-                    <li class="nav-item">
+                    <li> 
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-link nav-link text-white fw-bold">Logout</button>

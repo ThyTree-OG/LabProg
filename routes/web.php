@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthorController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,8 +25,13 @@ use App\Http\Controllers\BookController;
 
 
 Route::get('/books', [BookController::class, 'index'])->name('book.index');
+Route::get('/books/popular', [BookController::class, 'popularBooks'])->name('books.popular');
+
 Route::get('/book/{id}', [BookController::class, 'show'])->name('book.details');
 Route::post('/book/store', [BookController::class, 'store'])->name('book.store');
+Route::get('/book/{id}/read', [BookController::class, 'read'])->name('book.read');
+
+
 Route::get('/book/pdf/{id}', [BookController::class, 'viewPdf'])->name('book.pdf');
 
 
@@ -54,3 +63,15 @@ Route::get('/terms', function () {
 })->name('terms');
 
 Auth::routes();
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/profile', [UserController::class, 'show'])->name('user.profile');
+    Route::post('/profile', [UserController::class, 'update'])->name('user.profile.update');
+});
+
+Route::get('/authors/{id}', [AuthorController::class, 'show'])->name('author.details');
+
+Route::get('/books', [BookController::class, 'index'])->name('book.index');
+
+Auth::routes(['reset' => true]);

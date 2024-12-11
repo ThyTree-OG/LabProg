@@ -21,10 +21,6 @@
                     <input type="user_name" id="user_name" name="user_name" class="form-control" placeholder="Enter your username" autofocus required>
                 </div>
 
-
-        
-
-
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
@@ -42,6 +38,9 @@
                     <button type="submit" class="btn btn-warning btn-block">Login</button>
                 </div>
             </form>
+            <div class="text-center mt-3">
+                <a href="{{ route('password.request') }}">Forgot Your Password?</a>
+            </div>
             <p class="text-center mt-3">
                 Don't have an account? <a href="{{ route('register') }}">Register here</a>.
             </p>

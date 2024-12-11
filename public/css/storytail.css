@@ -1,9 +1,12 @@
 /* Global Styles */
 body {
+    margin: 0;
     font-family: 'Montserrat', sans-serif;
     background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
+    min-height: 100vh; /* Garante que o body ocupe a altura total */
+    display: flex;
+    flex-direction: column;
+
 }
 
 /* Header Section */
@@ -118,6 +121,8 @@ footer {
     color: white;
     padding: 50px 0;
     text-align: center;
+    margin-top: auto; /* Empurra o rodapé para o final da página */
+    
 }
 
 footer img {
@@ -189,4 +194,109 @@ footer p {
         padding: 12px 16px;
         font-size: 14px;
     }
+}
+.dropdown-toggle::after {
+    border-top-color: white; /* Define a cor da seta */
+}
+@font-face {
+    font-family: 'Earwig Factory RG';
+    src: url('../EarwigFactoryRG.otf') format('opentype'); /* Especifica o formato OpenType */
+}
+.custom-font {
+    font-family: 'Earwig Factory RG', sans-serif; /* Fallback para sans-serif */
+    font-size: 4rem; /* Ajuste o tamanho conforme necessário */
+    color: #E1700F ; /* Cor do texto */
+}
+
+             /* Container centralizado */
+             .form-container {
+                margin: auto; /* Centraliza vertical e horizontalmente */
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 400px;
+                text-align: center;
+            }
+    
+            /* Estilo do título */
+            @font-face {
+            font-family: 'Earwig Factory RG';
+            src: url('EarwigFactoryRG.otf') format('opentype');
+            }
+            .custom-font {
+                font-family: 'Earwig Factory RG', sans-serif;
+                font-size: 4rem;
+                color: #E1700F;
+                margin-bottom: 1rem;
+            }
+    
+            /* Estilo do formulário */
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+    
+            label {
+                text-align: left;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+    
+            input {
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+    
+            button {
+                background-color: #E1700F;
+                color: #fff;
+                border: none;
+                padding: 0.7rem;
+                font-size: 1rem;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+    
+            button:hover {
+                background-color: #d95c0e;
+            }
+    
+            /* Mensagem de sucesso */
+            .success-message {
+                color: #E1700F;
+                margin-bottom: 1rem;
+            }
+    
+            /* Erros */
+            .error-message {
+                color: red;
+                font-size: 0.9rem;
+            }
+
+            /* Botões personalizados */
+.btn-primary, 
+.btn-primary:hover, 
+.btn-primary:focus {
+    background-color: #E1700F;
+    border-color: #E1700F;
+    color: #fff; /* Cor do texto */
+}
+
+.btn-primary:hover {
+    background-color: #d95c0e; /* Tom mais escuro ao passar o mouse */
+}
+
+.btn-primary:disabled {
+    background-color: #E1700F;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.text-orange-custom {
+    color: #E95A0C; /* Substitua pelo código da cor laranja desejada */
 }

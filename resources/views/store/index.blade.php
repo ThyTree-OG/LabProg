@@ -13,12 +13,16 @@
                 type="text"
                 name="query"
                 placeholder="e.g. title, author..."
-                class="form-control w-50 py-2 rounded-start border-0"
+                class="form-control w-50 py-2 rounded-end border-0"
                 style="max-width: 500px;"
             >
-            <button type="submit" class="btn btn-warning rounded-end">
+            <button type="submit" class="btn btn btn-warning rounded">
                 <i class="bi bi-search"></i> Search
             </button>
+
+            <a href="{{ route('book.index') }}" class="btn btn-warning rounded">
+            <i class="bi bi-funnel"></i> Filter
+        </a>
         </form>
     </div>
 </header>
@@ -28,7 +32,7 @@
     <div class="container mx-auto flex justify-around py-4">
         <a href="#" class="text-orange-500 font-semibold">New Books</a>
         <a href="#" class="text-gray-600 hover:text-orange-500">Our Picks</a>
-        <a href="#" class="text-gray-600 hover:text-orange-500">Most Popular</a>
+        <a href="{{ route('books.popular') }}" class="text-gray-600 hover:text-orange-500">Most Popular</a>
     </div>
 </nav>
 
@@ -39,7 +43,7 @@
         @foreach($books as $book)
         <div class="col mb-5">
             <div class="card h-100">
-                <img class="card-img-top" src="{{ $book->cover_image }}" alt="{{ $book->title }}" />
+                <img class="card-img-top" src="{{ $book->cover_url }}" alt="{{ $book->title }}" />
                 <div class="card-body p-4">
                     <div class="text-center">
                         <h5 class="fw-bolder">{{ $book->title }}</h5>
@@ -48,6 +52,10 @@
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
+                        <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('book.read', $book->id) }}" target="_blank">
+                            <i class="bi bi-book lowe"></i> Read
+                        </a>
+                        <!-- //TODO: Resolver o erro causado na view de livros populares -->
                         <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
                     </div>
                 </div>

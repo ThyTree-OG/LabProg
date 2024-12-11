@@ -22,10 +22,9 @@ class Book extends Model
         'pdf_path',
     ];
     
-
     public function authors()
 {
-    return $this->belongsToMany(Author::class, 'author_books');
+    return $this->belongsToMany(Author::class, 'author_books', 'book_id', 'author_id');
 }
 
 }

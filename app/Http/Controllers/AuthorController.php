@@ -47,11 +47,17 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showAdmin(string $id)
     {
         $author = Author::findOrFail($id);
         return view('author.show', compact('author'));
     }
+
+public function showUser(string $id)
+{
+    $author = Author::findOrFail($id);
+    return view('authors.details', compact('author'));
+}
 
     /**
      * Show the form for editing the specified resource.
