@@ -45,12 +45,12 @@ Route::get('/admin', 'App\Http\Controllers\AdminController@index')
 
 // Routes para páginas de administração
 // Route::resource('admin/product', 'App\Http\Controllers\ProductController');
+Route::get('admin/book/create', [BookController::class, 'create'])->name('book.create');
 Route::get('admin/book/index', [BookController::class, 'index'])->name('book.index');
 Route::get('admin/book/{id}', [BookController::class, 'showAdmin'])->name('book.showAdmin');
 Route::get('admin/book/{id}/edit', [BookController::class, 'edit'])->name('book.edit');
 Route::put('admin/book/{id}', [BookController::class, 'update'])->name('book.update');
 Route::delete('admin/book/{id}', [BookController::class, 'destroy'])->name('book.destroy');
-Route::get('admin/book/create', [BookController::class, 'create'])->name('book.create');
 Route::post('admin/book', [BookController::class, 'store'])->name('book.store');
 
 

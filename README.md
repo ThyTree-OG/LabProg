@@ -13,6 +13,8 @@
 3. php artisan ui bootstrap
 4. php artisan ui bootstrap --auth
 5. restart the IDE (if open)
+6. php artisan storage:link
+7. php artisan key:generate
 
 ## About Laravel
 

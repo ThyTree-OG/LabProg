@@ -255,20 +255,20 @@ class BookController extends Controller
     }
 
     public function popularBooks()
-    {
-        $popularBooks = DB::table('popularbookslast3months')
-            ->select([
-                'book_id as id',
-                'title',
-                'description',
-                'cover_url',
-                'total_reads',
-                'average_rating',
-                'avg_progress'
-            ])
-            ->get();
-        return view('store.index', ['books' => $popularBooks]);
-    }
+{
+    $popularBooks = DB::table('popularbookslast3months')
+        ->select([
+            'book_id',
+            'title',
+            'description',
+            'cover_url',
+            'total_reads',
+            'average_rating',
+            'avg_progress'
+        ])
+        ->get();
+    return view('store.popular', ['books' => $popularBooks]);
+}
 
     public function read($id)
     {
