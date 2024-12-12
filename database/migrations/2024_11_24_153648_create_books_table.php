@@ -27,10 +27,10 @@ return new class extends Migration
         });
 
         DB::table('books')->insert([
-            ['title' => 'Brown Bear What Do You See?', 'description' => 'A brown bear story', 'pdf_path' => 'storage\livros\Eric_Carle_Brown_Bear_What_Do_You_See.pdf' ,'read_time' => 120, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1,'cover_url' => storage\img\d.png, 'created_at' => now(), 'updated_at' => now()],
-            ['title' => "Giraffes Can't Dance", 'description' => 'A story about giraffes', 'pdf_path' => 'storage\livros\Giraffes_Can_t_Dance.pdf', 'read_time' => 150, 'age_group' => 'Young Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => storage\img\a.png, 'created_at' => now(), 'updated_at' => now()],
-            ['title' => 'Monkey Puzzle', 'description' => 'A monkey puzzle', 'pdf_path' => 'storage\livros\Monkey Puzzle_Julia Donaldson.pdf', 'read_time' => 180, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => storage\img\b.png, 'created_at' => now(), 'updated_at' => now()],
-            ['title' => 'Pancakes pancakes', 'description' => 'Pancakes!', 'pdf_path' => 'storage\livros\Pancakes pancakes_Eric Carle.pdf', 'read_time' => 180, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => storage\img\c.png, 'created_at' => now(), 'updated_at' => now()],
+            ['title' => 'Brown Bear What Do You See?', 'description' => 'A brown bear story', 'pdf_path' => 'storage\livros\Eric_Carle_Brown_Bear_What_Do_You_See.pdf' ,'read_time' => 120, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1,'cover_url' => 'storage\img\d.png', 'created_at' => now(), 'updated_at' => now()],
+            ['title' => "Giraffes Can't Dance", 'description' => 'A story about giraffes', 'pdf_path' => 'storage\livros\Giraffes_Can_t_Dance.pdf', 'read_time' => 150, 'age_group' => 'Young Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => 'storage\img\a.png', 'created_at' => now(), 'updated_at' => now()],
+            ['title' => 'Monkey Puzzle', 'description' => 'A monkey puzzle', 'pdf_path' => 'storage\livros\Monkey Puzzle_Julia Donaldson.pdf', 'read_time' => 180, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => 'storage\img\b.png', 'created_at' => now(), 'updated_at' => now()],
+            ['title' => 'Pancakes pancakes', 'description' => 'Pancakes!', 'pdf_path' => 'storage\livros\Pancakes pancakes_Eric Carle.pdf', 'read_time' => 180, 'age_group' => 'Adult', 'is_active' => true, 'access_level' => 1, 'cover_url' => 'storage\img\c.png', 'created_at' => now(), 'updated_at' => now()],
         ]);
     } 
 
