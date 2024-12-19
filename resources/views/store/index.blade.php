@@ -33,7 +33,7 @@
         <a href="#" class="text-orange-500 font-semibold">New Books</a>
         <a href="#" class="text-gray-600 hover:text-orange-500">Our Picks</a>
         <a href="{{ route('books.popular') }}" class="text-gray-600 hover:text-orange-500">Most Popular</a>
-        <a href="{{ route('book.suggestions') }}" class="text-gray-600 hover:text-orange-500">Sugestões</a>
+        <a href="{{ route('book.suggestions') }}" class="text-gray-600 hover:text-orange-500">Sugestions</a>
     </div>
 </nav>
 

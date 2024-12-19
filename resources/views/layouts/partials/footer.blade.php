@@ -9,7 +9,6 @@
             <a href="{{ route('store') }}" class="text-white text-decoration-none">Books</a>
             <a href="{{ route('pricing') }}" class="text-white text-decoration-none">Pricing</a>
             <a href="{{ route('contact') }}" class="text-white text-decoration-none">Contacts</a>
-            <a href="{{ route('login') }}" class="text-white text-decoration-none">Login</a>
             <a href="{{ route('terms') }}" class="text-white text-decoration-none">Terms</a>
             <a href="{{ route('about') }}" class="text-white text-decoration-none">About</a>
         </div>
