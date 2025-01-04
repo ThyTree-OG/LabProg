@@ -18,9 +18,9 @@ return new class extends Migration
         });
 
         DB::table('age_groups')->insert([
-            ['age_group' => 'Infantil', 'created_at' => now(), 'updated_at' => now()],
-            ['age_group' => 'Jovem', 'created_at' => now(), 'updated_at' => now()],
-            ['age_group' => 'Adulto', 'created_at' => now(), 'updated_at' => now()],
+            ['age_group' => 'Children', 'created_at' => now(), 'updated_at' => now()],
+            ['age_group' => 'Young Adult', 'created_at' => now(), 'updated_at' => now()],
+            ['age_group' => 'Adult', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 

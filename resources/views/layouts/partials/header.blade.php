@@ -1,4 +1,3 @@
-<!-- resources/views/layouts/partials/header.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,19 +48,38 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item text-capitalize" href="{{ route('user.profile') }}">Settings</a></li>
+                                <li>
+                                    <a class="dropdown-item text-capitalize" href="{{ route('user.profile') }}">Settings</a>
+                                </li>
+                                <!-- Favorites Button -->
+                                <li>
+                                    <a class="dropdown-item text-capitalize" href="{{ route('book.favorites') }}">
+                                        Favorites
+                                        <span class="badge bg-danger text-white">
+                                            {{ Auth::user()->favorites->count() }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <!-- Backoffice Button for Admins -->
+                                @if (Auth::check() && Auth::user()->user_type_id === 1)
+                                <li>
+                                    <a href="{{ route('dashboard') }}" class="dropdown-item text-capitalize">Backoffice</a>
+                                </li>
+                                @endif
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link dropdown-item text-danger">Logout</button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     </ul>
-                    <!-- Logout Button -->
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link text-white fw-bold">Logout</button>
-                        </form>
-                    </li>
                     @endauth
                 </ul>
             </div>
         </div>
     </nav>
+</body>
+</html>

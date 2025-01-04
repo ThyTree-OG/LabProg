@@ -11248,3 +11248,14 @@ body {
   padding: 0;
   border: 0;
 }
+
+.btn-primary {
+  background-color: #FF8C00; /* Replace with your orange shade */
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #FF751A; /* Slightly darker orange for hover effect */
+  color: #fff;
+}
