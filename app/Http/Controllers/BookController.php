@@ -270,12 +270,13 @@ class BookController extends Controller
     return view('store.popular', ['books' => $popularBooks]);
 }
 
-    public function read($id)
-    {
-        $book = Book::findOrFail($id);
+public function read($id)
+{
+    $book = Book::findOrFail($id);
 
-        return response()->file(public_path($book->pdf_path));
-    }
+    // Permitir leitura de PDFs apenas para visitantes e usuários com permissão
+    return response()->file(public_path($book->pdf_path));
+}
 
     public function suggestions()
     {
@@ -287,4 +288,55 @@ class BookController extends Controller
             'books' => $suggestedBooks
         ]);
     }
+
+    public function addToFavorites($id)
+{
+    $user = auth()->user();
+
+    // Check if already favorited
+    $favoriteExists = DB::table('book_user_favourite')
+        ->where('book_id', $id)
+        ->where('user_id', $user->id)
+        ->exists();
+
+    if ($favoriteExists) {
+        return redirect()->back()->with('message', 'Book is already in your favorites.');
+    }
+
+    // Add to favorites
+    DB::table('book_user_favourite')->insert([
+        'book_id' => $id,
+        'user_id' => $user->id,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->back()->with('message', 'Book added to your favorites!');
+}
+public function isFavorite(Book $book)
+{
+    return auth()->user()->favorites()->where('book_id', $book->id)->exists();
+}
+public function toggleFavorite($id)
+{
+    $user = auth()->user();
+    $book = Book::findOrFail($id);
+
+    if ($user->favorites->contains($book->id)) {
+        // Remove from favorites
+        $user->favorites()->detach($book->id);
+    } else {
+        // Add to favorites
+        $user->favorites()->attach($book->id);
+    }
+
+    return redirect()->back();
+}
+public function favorites()
+{
+    $user = auth()->user();
+    $favorites = $user->favorites()->with('authors')->get(); // Load related data if needed
+
+    return view('book.favorites', compact('favorites'));
+}
 }

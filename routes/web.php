@@ -108,4 +108,19 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])
 
 Route::post('/request-plan-change', [PlanChangeRequestController::class, 'store'])->name('request.plan.change')->middleware('auth');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/books/{book}/read', [BookController::class, 'read'])
+    ->middleware(['auth', 'access.level'])
+    ->name('book.read');
+
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+Route::post('/books/{id}/favorite', [BookController::class, 'addToFavorites'])->name('book.favorite');
+Route::post('/book/{id}/favorite', [BookController::class, 'toggleFavorite'])->name('book.favorite');
+
+Route::get('/favorites', [BookController::class, 'favorites'])->name('book.favorites');
+
+Route::get('/books/{id}/read', [BookController::class, 'read'])->name('book.read');
+
+Route::get('/books/{book}/read', [BookController::class, 'read'])
+    ->middleware('access.level');

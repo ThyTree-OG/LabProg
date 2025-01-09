@@ -21,14 +21,44 @@ return new class extends Migration
             $table->string('email', 255)->unique();
             $table->string('password');
             $table->string('user_photo_url', 255)->nullable();
-            $table->rememberToken();
             $table->timestamps(0); // created_at, updated_at
         });
 
+        // Inserir dados iniciais para três utilizadores
         DB::table('users')->insert([
-            ['user_type_id' => 1, 'first_name' => 'Admin', 'last_name' => 'istrator', 'user_name' => 'admin', 'email' => 'admin@admin.com', 'password' => bcrypt('admin'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['user_type_id' => 2, 'first_name' => 'Alice', 'last_name' => 'Alice', 'user_name' => 'alice_a', 'email' => 'alice@example.com', 'password' => bcrypt('1234'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
-            ['user_type_id' => 3, 'first_name' => 'Bob', 'last_name' => 'Brown', 'user_name' => 'bob_b', 'email' => 'bob@example.com', 'password' => bcrypt('1234'), 'user_photo_url' => null, 'created_at' => now(), 'updated_at' => now()],
+            [
+                'user_type_id' => 1,
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'user_name' => 'admin',
+                'email' => 'johndoe@example.com',
+                'password' => bcrypt('admin'), // Senha encriptada
+                'user_photo_url' => '/storage/user_photos/b1.webp',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_type_id' => 2,
+                'first_name' => 'Jane',
+                'last_name' => 'Smith',
+                'user_name' => 'admin1',
+                'email' => 'janesmith@example.com',
+                'password' => bcrypt('admin1'), // Senha encriptada
+                'user_photo_url' => '/storage/user_photos/a1.webp',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'user_type_id' => 3,
+                'first_name' => 'Alice',
+                'last_name' => 'Johnson',
+                'user_name' => 'admin2',
+                'email' => 'alicejohnson@example.com',
+                'password' => bcrypt('admin2'), // Senha encriptada
+                'user_photo_url' => '/storage/user_photos/c1.webp',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 

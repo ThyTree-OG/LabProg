@@ -49,7 +49,6 @@
                 <img src="{{ $book->cover_url }}" class="card-img-top" alt="{{ $book->title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ $book->title }}</h5>
-                    <p class="card-text">{{ $book->description }}</p>
                 </div>
                 <div class="card-footer">
                     <a href="{{ route('book.details', $book->id) }}" class="btn btn-primary">View Details</a>

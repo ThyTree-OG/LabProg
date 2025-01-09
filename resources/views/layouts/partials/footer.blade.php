@@ -12,7 +12,7 @@
             <a href="{{ route('terms') }}" class="text-white text-decoration-none">Terms</a>
             <a href="{{ route('about') }}" class="text-white text-decoration-none">About</a>
         </div>
-        <p class="mt-4">&copy; 2021 storytail.pt</p>
+        <p class="mt-4">&copy; 2025 storytail.pt</p>
     </div>
 </footer>
 

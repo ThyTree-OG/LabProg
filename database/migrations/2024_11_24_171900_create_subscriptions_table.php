@@ -23,7 +23,6 @@ return new class extends Migration
         DB::table('subscriptions')->insert([
             ['user_id' => 1, 'plan_id' => 1, 'start_date' => now(), 'created_at' => now()],
             ['user_id' => 2, 'plan_id' => 2, 'start_date' => now(), 'created_at' => now()],
-            ['user_id' => 3, 'plan_id' => 3, 'start_date' => now(), 'created_at' => now()],
         ]);
     }
 

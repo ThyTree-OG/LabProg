@@ -300,3 +300,48 @@ footer p {
 .text-orange-custom {
     color: #E95A0C; /* Substitua pelo código da cor laranja desejada */
 }
+
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none; /* Esconde o botão padrão */
+}
+
+.custom-file-upload label {
+    background-color: #E1700F;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-file-upload label:hover {
+    background-color: #d95c0e;
+}
+
+#file-chosen {
+    font-style: italic;
+    color: #555;
+}
+
+
+
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-primary {
+    color: #007bff;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
