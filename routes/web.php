@@ -7,6 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\PlanChangeRequestController;
+
+use App\Models\Plan;
 
 
 /*
@@ -60,9 +63,14 @@ Route::get('/about', function () {
     return view('store.about');
 })->name('about');
 
+// Route::get('/pricing', function () {
+//     return view('store.pricing');
+// })->name('pricing');
+
 Route::get('/pricing', function () {
     return view('store.pricing');
 })->name('pricing');
+
 
 Route::get('/contact', function () {
     return view('store.contact');
@@ -88,6 +96,7 @@ Route::get('/suggestions', [BookController::class, 'suggestions'])->name('book.s
 
 Auth::routes(['reset' => true]);
 
+// Reset Password Routes
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
     ->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'checkEmail'])
@@ -96,3 +105,7 @@ Route::get('password/reset/{token}', [ResetPasswordController::class, 'showReset
     ->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])
     ->name('password.update');
+
+Route::post('/request-plan-change', [PlanChangeRequestController::class, 'store'])->name('request.plan.change')->middleware('auth');
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
