@@ -76,6 +76,8 @@
         <a href="{{ route('book.read', ['id' => $book->id]) }}" class="btn btn-primary btn-lg">
             <i class="fas fa-book-open"></i> Read
         </a>
+
+        <a class="btn btn-primary  btn-lg" href="{{ url('/activities') }}" >Go to Activities</a>
     </div>
 </div>
 @endsection

@@ -120,7 +120,13 @@ Route::post('/book/{id}/favorite', [BookController::class, 'toggleFavorite'])->n
 
 Route::get('/favorites', [BookController::class, 'favorites'])->name('book.favorites');
 
+Route::get('/activities', function () {
+    return view('activities');
+})->name('activities');
+
 Route::get('/books/{id}/read', [BookController::class, 'read'])->name('book.read');
 
 Route::get('/books/{book}/read', [BookController::class, 'read'])
     ->middleware('access.level');
+
+    
