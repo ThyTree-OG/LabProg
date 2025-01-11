@@ -128,5 +128,3 @@ Route::get('/books/{id}/read', [BookController::class, 'read'])->name('book.read
 
 Route::get('/books/{book}/read', [BookController::class, 'read'])
     ->middleware('access.level');
-
-    
