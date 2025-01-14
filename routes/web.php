@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\PlanChangeRequestController;
+use App\Http\Controllers\UserPlanController;
 
 use App\Models\Plan;
 
@@ -43,8 +44,8 @@ Route::get('/book/pdf/{id}', [BookController::class, 'viewPdf'])->name('book.pdf
 // Routes principais
 Route::get('/', 'App\Http\Controllers\StoreController@index')->name('store');
 Route::get('/admin', 'App\Http\Controllers\AdminController@index')
-->middleware(['auth', 'admin'])
-->name('dashboard');
+    ->middleware(['auth', 'admin'])
+    ->name('dashboard');
 
 // Routes para páginas de administração
 // Route::resource('admin/product', 'App\Http\Controllers\ProductController');
@@ -67,9 +68,12 @@ Route::get('/about', function () {
 //     return view('store.pricing');
 // })->name('pricing');
 
-Route::get('/pricing', function () {
-    return view('store.pricing');
-})->name('pricing');
+// Route::get('/pricing', function () {
+//     $plans = Plan::all();
+//     return view('store.pricing', compact('plans'));
+// })->name('pricing');
+
+Route::get('/pricing', [App\Http\Controllers\PricingController::class, 'index'])->name('pricing');
 
 
 Route::get('/contact', function () {
@@ -124,3 +128,13 @@ Route::get('/books/{id}/read', [BookController::class, 'read'])->name('book.read
 
 Route::get('/books/{book}/read', [BookController::class, 'read'])
     ->middleware('access.level');
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/plan-change-requests', [PlanChangeRequestController::class, 'index'])->name('plan-change-requests.index');
+    Route::patch('/plan-change-requests/{id}/approve', [PlanChangeRequestController::class, 'approve'])->name('plan-change-requests.approve');
+    Route::patch('/plan-change-requests/{id}/deny', [PlanChangeRequestController::class, 'deny'])->name('plan-change-requests.deny');
+});
+
+Route::get('/user-plans', [UserPlanController::class, 'index'])->name('user-plans.index');
+Route::delete('/user-plans/{user}/revoke', [UserPlanController::class, 'revoke'])->name('user-plans.revoke');

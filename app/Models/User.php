@@ -48,11 +48,34 @@ class User extends Authenticatable
     ];
 
     public function isAdmin()
-{
-    return $this->user_type_id === 1;
-}
-public function favorites()
-{
-    return $this->belongsToMany(Book::class, 'book_user_favourite');
-}
+    {
+        return $this->user_type_id === 1;
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Book::class, 'book_user_favourite');
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function currentSubscription()
+    {
+        return $this->hasOne(Subscription::class)->latest();
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function plan()
+    {
+        return $this->belongsToMany(Plan::class, 'subscriptions')
+            ->withPivot('start_date')
+            ->withTimestamps();
+    }
 }
