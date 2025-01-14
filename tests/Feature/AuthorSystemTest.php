@@ -5,10 +5,25 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Author;
+use Illuminate\Support\Facades\DB;
 
 class AuthorSystemTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * Run before each test.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Drop the view if it exists before running tests
+        DB::statement("DROP VIEW IF EXISTS PopularBooksLast3Months;");
+        
+        // Optionally, reapply migrations (if needed)
+        $this->artisan('migrate');
+    }
 
     /**
      * Test that the index route displays all authors.

@@ -67,8 +67,7 @@
                 <div class="card-footer text-center">
                     @auth
                         @php
-                            // Get the user's current subscription (if any)
-                            $userPlan = Auth::user()->currentSubscription ? Auth::user()->currentSubscription->plan : null;
+                            $userPlan = $userSubscription ? $userSubscription->plan : null;
                         @endphp
                         @if ($userPlan && $userPlan->id == $plan->id)
                             <button class="btn btn-warning" disabled>Current Plan</button>
