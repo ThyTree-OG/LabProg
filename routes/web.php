@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\PlanChangeRequestController;
 use App\Http\Controllers\UserPlanController;
 use App\Http\Controllers\PdfToImageController;
+use App\Http\Controllers\ActivityController;
 
 use App\Models\Plan;
 
@@ -151,3 +152,5 @@ Route::post('/books/{id}/rate', [BookController::class, 'rateBook'])->middleware
 
 Route::get('/user-plans', [UserPlanController::class, 'index'])->name('user-plans.index');
 Route::delete('/user-plans/{user}/revoke', [UserPlanController::class, 'revoke'])->name('user-plans.revoke');
+
+Route::resource('activity', ActivityController::class);
