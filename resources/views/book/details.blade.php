@@ -73,7 +73,7 @@
             <ul class="list-unstyled">
                 @forelse ($book->authors as $author)
                 <li style="font-size: 1.25rem;">
-                    <a href="{{ route('author.details', ['id' => $author->id]) }}" class="text-decoration-none text-dark">
+                    <a href="{{ route('author.details', ['id' => $author->id]) }}" class="btn btn-primary mt-3">
                         <strong>{{ $author->first_name }} {{ $author->last_name }}</strong>
                     </a>
                 </li>

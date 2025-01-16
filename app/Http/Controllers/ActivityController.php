@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class ActivityController extends Controller
 {
@@ -23,10 +24,6 @@ class ActivityController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'type' => 'required',
-            'status' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
         ]);
 
         Activity::create($request->all());
@@ -42,7 +39,8 @@ class ActivityController extends Controller
     public function edit($id)
     {
         $activity = Activity::findOrFail($id);
-        return view('activity.edit', ['activity' => $activity]);
+        $books = Book::all();
+        return view('activity.edit', ['activity' => $activity, 'books' => $books]);
     }
 
     public function update(Request $request, $id)
@@ -50,21 +48,31 @@ class ActivityController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
-            'type' => 'required',
-            'status' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date'
+            'books' => 'required|array|min:1'
         ]);
 
         $activity = Activity::findOrFail($id);
-        $activity->update($request->all());
+        $activity->update($request->except('books'));
+        $activity->books()->sync($request->books);
+
         return redirect()->route('activity.index')->with('success', 'Activity updated successfully.');
     }
+
 
     public function destroy($id)
     {
         $activity = Activity::findOrFail($id);
         $activity->delete();
         return redirect()->route('activity.index')->with('success', 'Activity deleted successfully.');
+    }
+
+    public function showBookActivities($id)
+    {
+        $book = Book::findOrFail($id);
+        $activities = Activity::whereHas('books', function ($query) use ($id) {
+            $query->where('book_id', $id);
+        })->get();
+
+        return view('book.activities', ['book' => $book, 'activities' => $activities]);
     }
 }

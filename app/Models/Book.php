@@ -9,7 +9,7 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
     protected $fillable = [
         'title',
         'description',
@@ -21,14 +21,19 @@ class Book extends Model
         'access_level',
         'pdf_path',
     ];
-    
+
     public function authors()
-{
-    return $this->belongsToMany(Author::class, 'author_books', 'book_id', 'author_id');
-}
-public function readers()
-{
-    return $this->belongsToMany(User::class, 'book_user_read')
-        ->withPivot('progress', 'created_at', 'updated_at');
-}
+    {
+        return $this->belongsToMany(Author::class, 'author_books', 'book_id', 'author_id');
+    }
+    public function readers()
+    {
+        return $this->belongsToMany(User::class, 'book_user_read')
+            ->withPivot('progress', 'created_at', 'updated_at');
+    }
+
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_book', 'book_id', 'activity_id');
+    }
 }

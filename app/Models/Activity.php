@@ -14,4 +14,9 @@ class Activity extends Model
         'title',
         'description',
     ];
+
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'activity_book', 'activity_id', 'book_id');
+    }
 }

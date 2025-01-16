@@ -53,11 +53,11 @@ class AuthorController extends Controller
         return view('author.show', compact('author'));
     }
 
-public function showUser(string $id)
-{
-    $author = Author::findOrFail($id);
-    return view('authors.details', compact('author'));
-}
+    public function showUser(string $id)
+    {
+        $author = Author::findOrFail($id);
+        return view('authors.details', compact('author'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -86,13 +86,16 @@ public function showUser(string $id)
         return redirect()->route('author.index')->with('success', 'Author updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $author = Author::findOrFail($id);
         $author->delete();
         return redirect()->route('author.index')->with('success', 'Author deleted successfully');
+    }
+
+    public function showAuthorBooks(string $id)
+    {
+        $author = Author::with('books')->findOrFail($id);
+        return view('authors.books', compact('author'));
     }
 }

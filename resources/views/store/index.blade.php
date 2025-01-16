@@ -57,7 +57,9 @@
                             <i class="bi bi-book lowe"></i> Read
                         </a>
                         <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
-                        <a class="btn btn-primary mt-2" href="{{ url('/activities') }}" >Go to Activities</a>
+                        <a class="btn btn-primary mt-2" href="{{ route('book.activities', $book->id) }}">Go to Activities</a>
+
+
                     </div>
                 </div>
             </div>

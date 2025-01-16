@@ -23,6 +23,7 @@
 
             <h3 class="fw-bold mt-4">Nationality</h3>
             <p style="font-size: 1.25rem;">{{ $author->nationality }}</p>
+            <a class="btn btn-primary mt-3" href="{{ route('authors.books', $author->id) }}">View Author's Books</a>
         </div>
     </div>
 

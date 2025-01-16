@@ -6,12 +6,8 @@
 <table id="activities" class="display" style="width:100%">
     <thead>
         <tr>
-            <th>Name</th>
+            <th>Title</th>
             <th>Description</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Start Date</th>
-            <th>End Date</th>
             <th>Created At</th>
             <th>Updated At</th>
             <th></th>
@@ -20,12 +16,8 @@
     <tbody>
         @foreach($activities as $activity)
         <tr>
-            <td>{{ $activity->name }}</td>
+            <td>{{ $activity->title }}</td>
             <td>{{ $activity->description }}</td>
-            <td>{{ $activity->type }}</td>
-            <td>{{ $activity->status }}</td>
-            <td>{{ $activity->start_date }}</td>
-            <td>{{ $activity->end_date }}</td>
             <td>{{ $activity->created_at }}</td>
             <td>{{ $activity->updated_at }}</td>
             <td style="width: 20%;text-align:right;">

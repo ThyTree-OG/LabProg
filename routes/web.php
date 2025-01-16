@@ -154,3 +154,9 @@ Route::get('/user-plans', [UserPlanController::class, 'index'])->name('user-plan
 Route::delete('/user-plans/{user}/revoke', [UserPlanController::class, 'revoke'])->name('user-plans.revoke');
 
 Route::resource('activity', ActivityController::class);
+
+Route::get('/authors/{id}/books', [AuthorController::class, 'showAuthorBooks'])->name('authors.books');
+
+Route::get('/books/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('books.show');
+
+Route::get('/books/{id}/activities', [ActivityController::class, 'showBookActivities'])->name('book.activities');
