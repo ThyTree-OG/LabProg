@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $book->title }}</h5>
                         <p class="card-text">{{ Str::limit($book->description, 100) }}</p>
-                        <a href="{{ route('books.show', $book->id) }}" class="btn btn-primary">View Book</a>
+                        <a class="btn btn-primary mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>
                     </div>
                 </div>
             </div>

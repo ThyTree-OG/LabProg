@@ -123,7 +123,7 @@
             <i class="fas fa-book-open"></i> Read
         </a>
 
-        <a class="btn btn-primary mt-3" href="{{ url('/activities') }}">Go to Activities</a>
+        <a class="btn btn-primary mt-3" href="{{ route('book.activities', $book->id) }}">Go to Activities</a>
     </div>
 </div>
 @endsection

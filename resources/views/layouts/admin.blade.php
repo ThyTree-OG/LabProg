@@ -55,24 +55,24 @@
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Livros
+                                Books
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ route('book.index') }}">Manutenção de Livros</a>
-                                    <a class="nav-link" href="{{ route('author.index') }}">Manutenção de Autores</a>
+                                    <a class="nav-link" href="{{ route('book.index') }}">Book Management</a>
+                                    <a class="nav-link" href="{{ route('author.index') }}">Author Management</a>
                                 </nav>
                             </div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePedidos" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Planos Premium
+                            Premium plans 
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsePedidos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="{{ route('plan-change-requests.index') }}">Pedidos de Mudança de plano</a>
-                                <a class="nav-link" href="{{ route('user-plans.index') }}">Planos de Utilizadores</a>
+                                <a class="nav-link" href="{{ route('plan-change-requests.index') }}">Change plan requests</a>
+                                <a class="nav-link" href="{{ route('user-plans.index') }}">User plans</a>
                             </nav>
                         </div>
 
