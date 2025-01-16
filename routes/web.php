@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\PlanChangeRequestController;
 use App\Http\Controllers\UserPlanController;
+use App\Http\Controllers\PdfToImageController;
 
 use App\Models\Plan;
 
@@ -115,6 +116,10 @@ Route::post('/request-plan-change', [PlanChangeRequestController::class, 'store'
 Route::get('/books/{book}/read', [BookController::class, 'read'])
     ->middleware(['auth', 'access.level'])
     ->name('book.read');
+Route::get('/books/{book}/read', [BookController::class, 'read'])
+    ->middleware('access.level');
+
+Route::get('/books/{id}/first-page', [PdfToImageController::class, 'showFirstPage'])->name('books.first-page');
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
@@ -139,6 +144,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/plan-change-requests/{id}/approve', [PlanChangeRequestController::class, 'approve'])->name('plan-change-requests.approve');
     Route::patch('/plan-change-requests/{id}/deny', [PlanChangeRequestController::class, 'deny'])->name('plan-change-requests.deny');
 });
+
+Route::get('/books/currently-reading', [BookController::class, 'currentlyReading'])->name('book.currentlyReading');
+Route::post('/books/{book}/progress', [BookController::class, 'saveProgress'])->middleware('auth')->name('books.saveProgress');
+Route::post('/books/{id}/rate', [BookController::class, 'rateBook'])->middleware('auth')->name('books.rate');
 
 Route::get('/user-plans', [UserPlanController::class, 'index'])->name('user-plans.index');
 Route::delete('/user-plans/{user}/revoke', [UserPlanController::class, 'revoke'])->name('user-plans.revoke');

@@ -68,9 +68,8 @@ class Kernel extends HttpKernel
     ];
 
     protected $routeMiddleware = [
-        // Outros middlewares
-        'access.level' => \App\Http\Middleware\AccessLevelMiddleware::class,
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'access.level' => \App\Http\Middleware\AccessLevelMiddleware::class, // Adicione se necessário
     ];
-    
 }
 

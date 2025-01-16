@@ -20,9 +20,9 @@ return new class extends Migration
         });
 
         DB::table('plans')->insert([
-            ['name' => 'Premium Plan', 'access_level' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Standard Plan', 'access_level' => 2, 'created_at' => now(), 'updated_at' => now()],
-           
+            ['name' => 'Standard Plan', 'access_level' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Premium Plan', 'access_level' => 2, 'created_at' => now(), 'updated_at' => now()],
+
         ]);
     }
 

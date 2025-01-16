@@ -7,10 +7,11 @@
     <title>@yield('title', 'Storytail')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/storytail.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dearflip@2.2.0/css/dearflip.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/dearflip@2.2.0/js/dearflip.min.js"></script>
 </head>
 
 <body class="bg-light">
-
     <!-- Header with Home, Login, Register, and Conditional Display -->
     <nav class="navbar navbar-expand-lg py-3" style="background-color: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);">
         <div class="container d-flex justify-content-between align-items-center">
@@ -46,16 +47,27 @@
                     </li>
                     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user fa-fw"></i>
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item text-capitalize" href="{{ route('user.profile') }}">Settings</a>
+                                </li>
+                                <!-- Separator for Currently Reading Books -->
+                                <li>
+                                <a class="dropdown-item text-capitalize" href="{{ route('book.currentlyReading') }}">
+                                    Currently Reading Books
+                                <span class="badge bg-primary1 text-white">
+                                     {{ Auth::user()->readingBooks()->count() }}
+                                 </span>
+                                </a>
                                 </li>
                                 <!-- Favorites Button -->
                                 <li>
                                     <a class="dropdown-item text-capitalize" href="{{ route('book.favorites') }}">
                                         Favorites
-                                        <span class="badge bg-danger text-white">
+                                        <span class="badge bg-primary1 text-white">
                                             {{ Auth::user()->favorites->count() }}
                                         </span>
                                     </a>
@@ -70,7 +82,7 @@
                                 <li>
                                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                         @csrf
-                                        <button type="submit" class="btn btn-link dropdown-item text-danger">Logout</button>
+                                        <button type="submit" class="btn btn-link dropdown-item ">Logout</button>
                                     </form>
                                 </li>
                             </ul>

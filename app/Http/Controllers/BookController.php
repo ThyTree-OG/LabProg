@@ -9,6 +9,14 @@ use App\Models\AuthorBook;
 use App\Models\Plan;
 use App\Models\AgeGroup;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 
 
 class BookController extends Controller
@@ -159,6 +167,8 @@ class BookController extends Controller
             'book' => $book,
             'plans' => $plans,
             'age_groups' => $age_groups,
+	    'user' => auth()->user(), // Passa o usuário autenticado para a view
+
         ]);
     }
 
@@ -339,4 +349,122 @@ public function favorites()
 
     return view('book.favorites', compact('favorites'));
 }
+
+
+public function flip(Book $book)
+{
+    // Path to the PDF
+    $pdfPath = public_path("storage/livros/" . basename($book->pdf_path));
+
+    // Convert PDF pages to images
+    $images = $this->convertPdfToImages($pdfPath);
+
+    // Pass images to the view
+    return view('books.flip', compact('book', 'images'));
+}
+
+public function currentlyReading()
+{
+    $user = auth()->user();
+
+    // Buscar livros que o usuário está lendo (progresso entre 1% e 99%)
+    $currentlyReading = DB::table('book_user_read')
+        ->join('books', 'book_user_read.book_id', '=', 'books.id')
+        ->where('book_user_read.user_id', $user->id)
+        ->where('book_user_read.progress', '>', 0)
+        ->where('book_user_read.progress', '<', 100)
+        ->select('books.*', 'book_user_read.progress')
+        ->get();
+
+    return view('book.currently_reading', compact('currentlyReading'));
+}
+
+public function saveProgress(Request $request, $bookId)
+{
+    try {
+        \Log::info('saveProgress called', ['bookId' => $bookId, 'progress' => $request->progress]);
+
+        $request->validate([
+            'progress' => 'required|numeric|min:0|max:100',
+        ]);
+
+        // Verificar se o livro existe
+        $book = Book::find($bookId);
+        if (!$book) {
+            Log::warning('Book not found', ['bookId' => $bookId]);
+            return response()->json(['message' => 'Book not found.'], 404);
+        }
+
+        // Obter o usuário autenticado
+        $user = auth()->user();
+        if (!$user) {
+            \Log::warning('User not authenticated');
+            return response()->json(['message' => 'User not authenticated.'], 401);
+        }
+
+        \Log::info('User authenticated', ['userId' => $user->id]);
+
+        // Inserir ou atualizar o progresso
+        $result = DB::table('book_user_read')->updateOrInsert(
+            ['book_id' => $book->id, 'user_id' => $user->id], // Condição de busca
+            [
+                'progress' => $request->progress,
+                'rating' => 0, // Define rating como 0 por padrão
+                'read_date' => now(), // Define a data de leitura como now
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+
+        \Log::info('Database operation result', ['result' => $result]);
+
+        return response()->json(['message' => 'Progress saved successfully!'], 200);
+    } catch (\Exception $e) {
+        \Log::error('Error in saveProgress', ['error' => $e->getMessage()]);
+        return response()->json([
+            'message' => 'Failed to save progress.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+public function rateBook(Request $request, $id)
+{
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+    ]);
+
+    $user = auth()->user();
+    $book = Book::findOrFail($id);
+
+    // Atualizar ou criar o rating na tabela pivot
+    DB::table('book_user_read')->updateOrInsert(
+        ['book_id' => $book->id, 'user_id' => $user->id],
+        ['rating' => $request->rating, 'updated_at' => now()]
+    );
+
+    return redirect()->back()->with('success', 'Your rating has been submitted.');
+}
+
+public function showBookDetails($bookId)
+{
+    $book = Book::findOrFail($bookId);
+    $user = auth()->user();
+
+    $isCompleted = false;
+    $currentRating = 0;
+
+    if ($user) {
+        // Verificar se o livro está concluído
+        $completedBook = $user->completedBooks()->where('book_id', $bookId)->first();
+
+        if ($completedBook) {
+            $isCompleted = true;
+            $currentRating = $completedBook->pivot->rating;
+        }
+    }
+
+    return view('book.details', compact('book', 'isCompleted', 'currentRating'));
+}
+
 }

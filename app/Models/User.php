@@ -52,10 +52,10 @@ class User extends Authenticatable
         return $this->user_type_id === 1;
     }
 
-    public function favorites()
-    {
-        return $this->belongsToMany(Book::class, 'book_user_favourite');
-    }
+public function favorites()
+{
+    return $this->belongsToMany(Book::class, 'book_user_favourite');
+}
 
     public function subscriptions()
     {
@@ -78,4 +78,18 @@ class User extends Authenticatable
             ->withPivot('start_date')
             ->withTimestamps();
     }
+
+public function readingBooks()
+{
+    return $this->belongsToMany(Book::class, 'book_user_read')
+        ->withPivot('progress', 'rating', 'created_at', 'updated_at')
+        ->wherePivot('progress', '>', 0)
+        ->wherePivot('progress', '<', 100);
+}
+public function completedBooks()
+{
+    return $this->belongsToMany(Book::class, 'book_user_read')
+        ->withPivot('progress', 'rating', 'created_at', 'updated_at')
+        ->wherePivot('progress', '=', 100);
+}
 }

@@ -53,7 +53,7 @@
                 </div>
                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                     <div class="text-center">
-                        <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('book.read', $book->id) }}" target="_blank">
+                        <a class="btn btn-warning mt-auto text-capitalize" href="{{ route('books.first-page', $book->id) }}" target="_blank">
                             <i class="bi bi-book lowe"></i> Read
                         </a>
                         <a class="btn btn-outline-dark mt-auto" href="{{ route('book.details', $book->id) }}">View details</a>

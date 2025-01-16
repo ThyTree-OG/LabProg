@@ -47,7 +47,7 @@
                     <label for="remember" class="form-check-label">Remember Me</label>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-warning btn-block">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </div>
             </form>
             <div class="text-center mt-3">

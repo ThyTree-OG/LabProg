@@ -26,5 +26,9 @@ class Book extends Model
 {
     return $this->belongsToMany(Author::class, 'author_books', 'book_id', 'author_id');
 }
-
+public function readers()
+{
+    return $this->belongsToMany(User::class, 'book_user_read')
+        ->withPivot('progress', 'created_at', 'updated_at');
+}
 }
